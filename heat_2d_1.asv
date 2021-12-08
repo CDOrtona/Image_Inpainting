@@ -33,6 +33,7 @@ alpha=3; % arbitrary thermal diffusivity
 
 inds = find(mask == 0);
 [rows, cols] = ind2sub(size(mask),inds);
+rowsCols = cat(2, rows, cols);
 %U(coord_damaged_pixels') = im(coord_damaged_pixels');
 
 
@@ -40,7 +41,7 @@ inds = find(mask == 0);
 %--boundary conditions----------------------------------------------------
 
 im1 = im;
-im1(inds') = 0;
+%im1(inds') = 1;
 U = im1;
 
 %-------------------------------------------------------------------------
@@ -53,21 +54,23 @@ M=5000; % maximum number of allowed iteration
 
 %---finite difference scheme----------------------------------------------
 
-fram=0;
 Ncount=0;
 Umax=max(max(U));
 loop=1;
 while loop==1
    ERR=0; 
    U_old = U;
-    for i = 1:size(rows)
-        y = rows(i);
-        x = cols(i);
-        %da implementare le condizioni di neumann
-        Residue = r*(U_old(y+1,x)+U_old(y-1,x)+U_old(y,x+1) ... 
-                 +U_old(y,x-1))+(1-4*r)*U_old(y,x)-U(y,x);
-        ERR=ERR+abs(Residue);
-        U(y,x)=U(y,x)+Residue;
+    for i = 2:imX-1
+        for j = 2:imY-1
+            %fix tihi
+           if(contains(rowsCols, [i,j]))
+    
+               Residue = r*U_old(i+1,j)+(1-4*r)*U_old(i,j)+r*U_old(i-1,j)... 
+                                  + r*U_old(i,j+1)+r*U_old(i,j-1)-U(i,j);
+               U(i,j) = Residue + U(i,j);
+               ERR=ERR+abs(Residue);
+           end
+        end
     end
 
     if(ERR>=0.01*Umax)  % allowed error limit is 1% of maximum temperature
@@ -93,7 +96,6 @@ end
 
 
 imshow(U);
-figure
 
 %------------------------------------------------------------------------
 
