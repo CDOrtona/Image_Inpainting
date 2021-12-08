@@ -46,10 +46,10 @@ U = im1;
 %-------------------------------------------------------------------------
 
 %DT = DX^2/(2*alpha); % time step 
-DT = 0.05;
+DT = 0.01;
 r = alpha*(DT/DX^2); %it has to be less than 0.5 to have stability
 
-M=5000; % maximum number of allowed iteration
+M=10000; % maximum number of allowed iteration
 
 %---finite difference scheme----------------------------------------------
 

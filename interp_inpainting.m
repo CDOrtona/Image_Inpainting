@@ -1,13 +1,7 @@
-clear 
-clc
-close all
+function [inpainted_image] = interp_inpainting(image,mask)
+%UNTITLED Summary of this function goes here
+%   Detailed explanation goes here
 
-mask_file = uigetfile('*.jpg; *.png; *.bmp', "Select the mask");
-image_file = uigetfile('*.jpg; *.png; *.bmp', "Select the image");
-mask = im2double(imread(mask_file));
-image = im2double(imread(image_file));
-
-tic
 [i, j] = find(mask == 1);
 coord = cat(2,i,j);
 
@@ -32,15 +26,12 @@ reconstructedImage = image;
 reconstructedImage(indScat') = 0;
 
 %subplot(1,2,1);
-imshow(reconstructedImage);
-title("Highlighted Scattered Data");
+%imshow(reconstructedImage);
+%title("Highlighted Scattered Data");
 
 newV = F(coordScat);
 reconstructedImage(indScat') = newV';
 
-figure
-montage({image, reconstructedImage});
-title(['Image to Be Inpainted','    |    ','Inpainted Image']);
-t = toc;
-display(t);
+inpainted_image = reconstructedImage;
 
+end
