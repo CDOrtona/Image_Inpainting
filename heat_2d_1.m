@@ -8,7 +8,11 @@ clc;
 close all;
 clear;
 
+<<<<<<< Updated upstream
 %--image------------------------------------------------------------------
+=======
+%--image loading------------------------------------------------------------------
+>>>>>>> Stashed changes
 
 mask_file = uigetfile('*.jpg; *.png; *.bmp', "Select the mask");
 image_file = uigetfile('*.jpg; *.png; *.bmp', "Select the image");
@@ -17,6 +21,7 @@ im = im2double(imread(image_file));
 
 %im = im2double(imread('parrot.png', 'png'));
 %mask = im2double(imread('parrot-mask.png', 'png'));
+<<<<<<< Updated upstream
 [imX, imY] = size(im);
 
 %--dimensions...........................................................
@@ -96,6 +101,71 @@ end
 imshow(U);
 figure
 imshow(im);
+=======
+[im_x, im_y] = size(im);
+
+%--parameters set-up...........................................................
+
+alpha=0.5; % arbitrary thermal diffusivity 
+
+DX=1; % step size 
+DY=1;
+
+t_max = 400;
+%DT = 0.025;
+DT = 0.1;
+r = alpha*(DT/DX^2); %it has to be less than 0.5 to have stability
+
+ts = 0:DT:t_max;
+ts_n = length(ts); %number of nodes in the time domain
+
+%--initial condition------------------------------------------------------
+
+U0 =  zeros(size(im));
+
+%--boundary conditions----------------------------------------------------
+
+
+
+%---Explicit PDE Heat Diffusion-------------------------------------------
+
+ind = find(mask == 0);
+im_new = im;
+im_new(ind) = rand(nnz(ind),1);
+
+imshow(im_new);
+figure;
+
+Umax=max(max(U0));
+U_new = zeros(size(im));
+U_old = U0;
+
+for k = 1:ts_n
+
+    for i = 2:im_x-1
+
+        for j = 2:im_y-1
+
+           if(mask(i,j)==1)
+               chi = 1;
+           else
+               chi = 0;
+           end
+
+           U_new(i,j) = r*(U_old(i+1,j)+U_old(i-1,j)+U_old(i,j+1) ...
+                      + U_old(i,j-1))+(1-4*r)*U_old(i,j)  ... 
+                      + chi*DT*(im(i,j)-U_old(i,j));
+             
+        end
+    end
+
+    U_old = U_new;
+end
+
+%--display image inpainted----------------------------------------------
+restored_image = im2uint8(U_new);
+imshow(restored_image);
+>>>>>>> Stashed changes
 
 %------------------------------------------------------------------------
 
