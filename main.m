@@ -11,6 +11,12 @@ clc;
 
 mask = im2double(imread(uigetfile('*.jpg; *.png; *.bmp', "Choose the mask")));
 im   = im2double(imread(uigetfile('*.jpg; *.png; *.bmp', "Choose the image")));
+if(size(im)~=size(mask))
+    fig = uifigure;
+    uialert(fig,['error loading images,' ...
+        ' Image and Mask have different sizes'],'error');
+    return;
+end
 inpainted_image = zeros(size(im));
 
 %----------------Image Inpainting---------------------------------------
