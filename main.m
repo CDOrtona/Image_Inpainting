@@ -11,12 +11,12 @@ clc;
 
 mask = im2double(imread(uigetfile('*.jpg; *.png; *.bmp', "Choose the mask")));
 im   = im2double(imread(uigetfile('*.jpg; *.png; *.bmp', "Choose the image")));
-if(size(im)~=size(mask))
-    fig = uifigure;
-    uialert(fig,['error loading images,' ...
-        ' Image and Mask have different sizes'],'error');
-    return;
-end
+% if(size(im)~=size(mask))
+%     fig = uifigure;
+%     uialert(fig,['error loading images,' ...
+%         ' Image and Mask have different sizes'],'error');
+%     return;
+% end
 inpainted_image = zeros(size(im));
 
 %----------------Image Inpainting---------------------------------------
@@ -46,7 +46,19 @@ while 1
 
         case 2
             % 2) PDE 
-    
+            if(size(im,3) == 1)
+                inpainted_image = PDE_inpainting(im,mask);
+            else 
+                im_R = PDE_inpainting(im(:,:,1),mask);
+                im_G = PDE_inpainting(im(:,:,2),mask);
+                im_B = PDE_inpainting(im(:,:,3),mask);
+                inpainted_image = cat(3, im_R, im_G, im_B);
+            end
+
+            figure;
+            montage({im, im2uint8(inpainted_image)});
+            title(['Image to Be Inpainted','    |    ','Inpainted Image']);
+
         case 3
             break
     end
