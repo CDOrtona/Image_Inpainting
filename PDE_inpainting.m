@@ -1,17 +1,4 @@
-
-%------------------------------------------------------------------------
-%--- Heat Equation in two dimensions-------------------------------------
-%--- Solves Ut=alpha*(Uxx+Uyy)-------------------------------------------
-%------------------------------------------------------------------------
-
-clc;
-close all;
-clear;
-
-%--image initialization------------------------------------------------------------------
-
-mask = im2double(imread(uigetfile('*.jpg; *.png; *.bmp', "Select the mask")));
-im = im2double(imread(uigetfile('*.jpg; *.png; *.bmp', "Select the image")));
+function [inpainted_image] = PDE_inpainting(im, mask)
 
 [imX, imY] = size(im);
 
@@ -35,8 +22,8 @@ U0 = zeros(size(im));
 
 %--boundary conditions----------------------------------------------------
 
-inds = find(mask == 0);
-[rows, cols] = ind2sub(size(mask),inds);
+%inds = find(mask == 0);
+%[rows, cols] = ind2sub(size(mask),inds);
 
 % pd_im = fitdist(reshape(im,[(imX*imY),1]),'Normal');
 % 
@@ -62,28 +49,18 @@ L_Y(imY,imY)=-1/dy^2;
 U = U0;
 
 chi = zeros(size(mask));
-chi_ind = find(mask == 1);
+chi_ind = mask == 1;
 chi(chi_ind) = 1;
 
 for k = 1:size(ts,2)
     
     
-    U = U+dt*(L_X*U+U*L_Y+10*mask.*(im-U));
+    U = U+dt*(L_X*U+U*L_Y+10*chi.*(im-U));
 
 end
 
-%--display image inpainted----------------------------------------------
+%--output----------------------------------------------
 
-subplot(1,2,1);
-imshow(im2uint8(im));
-title('Image to be inpainted')
-subplot(1,2,2);
-imshow(im2uint8(U));
-title('Inpainted Image');
+inpainted_image = U;
 
-%------------------------------------------------------------------------
-
-
-
-
-
+end
