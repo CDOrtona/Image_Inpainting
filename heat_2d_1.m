@@ -8,70 +8,80 @@ clc;
 close all;
 clear;
 
-%--image initialization------------------------------------------------------------------
+%% Inizializzazione imaggini
+%
 
 mask = im2double(imread(uigetfile('*.jpg; *.png; *.bmp', "Select the mask")));
-im = im2double(imread(uigetfile('*.jpg; *.png; *.bmp', "Select the image")));
+I = im2double(imread(uigetfile('*.jpg; *.png; *.bmp', "Select the image")));
 
-[imX, imY] = size(im);
+[imX, imY] = size(I);
 
 %--dimensions...........................................................
 %%%se riduco dt ho più iterazioni e quindi più tempo ma meno diffusione, 
 %%%se riduco le iterazioni quindi aumento dt ho meno tempo ma anche più diffusione
 %%%se riduco le iterazioni quindi diminuisco t_max ho meno tempo e minore
 %%%diffusione, quindi potrei aumentare delta
-dx=1; % step size
+dx=1; %passi discretizzazione spaziale
 dy=1;
-dt = 0.4;
-t_max = 500;
+dt = 0.4; %passo discretizzazione temporale
+t_max = 500; 
 
 ts = 1:dt:t_max;
+ts_n = size(ts,2);
 
 %lambda=0.1; % arbitrary thermal diffusivity 
 lambda = 0.5;
 
-r = lambda*(dt/dx^2); %it has to be less than 0.5 to have stability
+%CFL condition deve essere inferiore a 0.5 per avere stabilità
+r = lambda*(dt/dx^2); 
 
-%--initial condition------------------------------------------------------
-
-U = zeros(size(im));
-
-%---finite difference scheme----------------------------------------------
+%Condizione iniziale
+U0 = zeros(size(I));
 
 L_X=(diag(-2*r*ones(imX,1)) + diag(r*ones(imX-1,1),1) + diag(r*ones(imX-1,1),-1));
 L_Y=(diag(-2*r*ones(imY,1)) + diag(r*ones(imY-1,1),1) + diag(r*ones(imY-1,1),-1));
-%condizioni di Neumann con differenze finite in avanti
-L_X(1,1)=-r;
-L_X(imX,imX)=-r;
-L_Y(1,1)=-r;
-L_Y(imY,imY)=-r;
+
+%Condizioni di Neumann
+L_X(1,2)=2*r;
+L_X(imX,imX-1)=2*r;
+L_Y(1,2)=2*r;
+L_Y(imY,imY-1)=2*r;
 
 chi = zeros(size(mask));
 chi_ind = find(mask == 1);
 chi(chi_ind) = 1;
+
+U_old = U0;
+U_new = size(U_old);
+
 tic;
-for k = 1:size(ts,2)
+for k = 1:ts_n
     
-    U = U+L_X*U+U*L_Y+dt*(mask.*(im-U));
+    U_new = U_old+L_X*U_old+U_old*L_Y+dt*(chi.*(I-U_old));
+    U_old = U_new;
+    
     figure(1);
-    imagesc(U,[0 1]), axis equal; axis off; colormap(gray)
-    title(['Inpainted image as solution to heat equation after '...
-        num2str(k) ' timesteps'])
+    imagesc(U_new,[0 1]), axis equal; axis off; colormap(gray)
+    title([num2str(k) 'timesteps'])
 
 end
 t=toc
+
+Irestored = U_new;
+
 %--display image inpainted----------------------------------------------
 
 subplot(1,2,1);
-imshow(im2uint8(im));
+imshow(im2uint8(I));
 title('Image to be inpainted')
 subplot(1,2,2);
-imshow(im2uint8(U));
+imshow(im2uint8(Irestored));
 title('Inpainted Image');
 
-%------------------------------------------------------------------------
-
-peaksnr = psnr(U,im);
+%PSNR
+Irestored = im2uint8(Irestored);
+mask = im2uint8(mask);
+peaksnr = psnr(U_new,I);
 
 
 

@@ -2,37 +2,97 @@ clear;
 close all;
 clc;
 
-% Questo semplice programma scritto in Matlab permette di eseguire image
-% inpainting con due metodi distinti:
+% Questo programma permette di eseguire la restaurazione di una immagine
+% (image inpainting) con il metodo dell'interpolazione o per 
+% diffusione attraverso la risoluzione di una PDE.
+
+%% Come usare il programma
+
+% Per poter usare il programma si deve scegliere l'opzione di inpainting
+% che si intende usare digitando sulla command window, una volta avviato il
+% programma, il numero corrispondente ad una delle opzioni riportate qui
+% di seguito:
 % 1) Interpolazione
-% 2) Parabolic PDE - Heat Diffusion 
+% 2) Parabolic PDE - Diffusion 
+% 3) Exit
+
+% NOTA BENE:
+% All'avvio del programma viene chiesto di selezionare la maschera e
+% successivamente selezionare l'immagine da restaurare.
+% L'algoritmo funziona sia con immagini in scala di grigio che con immagini
+% a colori.
 
 % ---------- Inizializzazione Immagini --------------------------------
 
 mask = im2double(imread(uigetfile('*.jpg; *.png; *.bmp', "Choose the mask")));
 im   = im2double(imread(uigetfile('*.jpg; *.png; *.bmp', "Choose the image")));
+inpainted_image = zeros(size(im));
 
-    switch input("Choose your option: \n " + ...
+%----------------Image Inpainting---------------------------------------
+
+while 1
+    switch input("Seleziona una di queste opzioni: \n " + ...
             " 1) Interpolazione \n " + ...
-            "2) PDE Heat-Diffusion \n" + ...
-            "3) Exit")
+            " 2) PDE Diffusione\n " + ...
+            " 3) Exit \n ")
     
         case 1
-         
+            
             % 1) Interpolazione
-            inpainted_image = interp_inpainting(im, mask);
-    
-            montage({im, inpainted_image});
-            title(['Image to Be Inpainted','    |    ','Inpainted Image']);
-            display(t);
-    
+            %image inpainting nel caso di una immagine in scala di grigi
+            if(size(im,3) == 1)
+                [inpainted_image_L, inpainted_image_N] = interp_inpainting(im, mask);
+                figure;
+                subplot(1,3,1);
+                imshow(im);
+                title('Image to be inpainted');
+                subplot(1,3,2);
+                imshow(inpainted_image_L);
+                title('Linear Interpolation Inpainting');
+                subplot(1,3,3);
+                imshow(inpainted_image_N);
+                title('Nearest Neighbors Interpolation inpainting');
+            
+            else
+                %image inpainting nel caso di una immagine RGB
+                im_R = interp_inpainting(im(:,:,1), mask);
+                im_G = interp_inpainting(im(:,:,2), mask);
+                im_B = interp_inpainting(im(:,:,3), mask);
+                inpainted_image = cat(3, im_R, im_G, im_B);
+                subplot(1,2,1);
+                imshow(im);
+                title('Image to be inpainted');
+                subplot(1,2,2);
+                imshow(inpainted_image);
+                title('Linear Interpolation Inpainting');
+            end
+
         case 2
             % 2) PDE 
-    
-        case 3
-            break
-end
+            if(size(im,3) == 1)
+                RGB = 0;
+                inpainted_image = PDE_inpainting(im,mask, RGB);
+            else 
+                RGB = 1;
+                im_R = PDE_inpainting(im(:,:,1),mask, RGB);
+                im_G = PDE_inpainting(im(:,:,2),mask, RGB);
+                im_B = PDE_inpainting(im(:,:,3),mask, RGB);
+                inpainted_image = cat(3, im_R, im_G, im_B);
+            end
 
+            figure;
+            montage({im, im2uint8(inpainted_image)});
+            title(['Image to Be Inpainted','    |    ','Inpainted Image']);
+
+        case 3
+            %exit
+            break
+
+        otherwise
+            %caso in cui si digita un numero non compreso in elenco
+            disp('Carattere non riconosciuto');
+    end
+end
 
 
 
