@@ -1,19 +1,19 @@
 function [Irestored_linear, Irestored_nearest] = interp_inpainting(I,mask)
 
-%La funzione permette di eseguire image inpainting su una foto in scala di
-%grigi attraverso il metodo della interpolazione. In particolare e' stata
-%implementata una funzione interpolante sia con il metodo lineare  sia con
-%il metodo nearest neighbors.
-%
-%INPUT: 
-%       I -> Immagine da restaurare
-%       mask -> Maschera che definisce i punti(pixel) dell'immagine dove si 
-%               ha il problema e dove si vuole quindi eseguire l'inpainting
-%
-%OUTPUT:
-%       Irestored_linear -> Immagine restaurata con interpolazione lineare
-%       Irestored_nearest ->Immagine restaurata con interpolazione Nearest
-%                            Neighbour
+% This function performs the inpainting of an image through the use of
+% interpolation. It has been implemented to use both linear and nearest
+% neighbour interpolation.
+% 
+% 
+%  INPUT: 
+%        I -> Image to be restored
+%        mask ->  The mask defines the pixels of the image corresponding to  
+%                 the damaged regions we wish to inpaint.
+% 
+%  OUTPUT:
+%        Irestored_linear -> Restored Image through Linear Interpolation
+%        Irestored_nearest -> Restored image through nearest neighbour
+%        interpolation
 
 [i, j] = find(mask == 1);
 coord = cat(2,i,j);
@@ -26,27 +26,19 @@ indScat = sub2ind(size(I), i2, j2);
 
 v = I(ind);
 
-%Interpolante lineare
+
 F_linear = scatteredInterpolant(coord, v, 'linear');
-%Interpolante Nearest Neighbour 
 F_nearest = scatteredInterpolant(coord, v, 'nearest');
 
-%Definisico due diverse immagini ricostruite secondo i due metodi sopra
-%definiti: lineare e Nearest neighbour
 reconstructedImage_linear = I;
 reconstructedImage_nearest = I;
 
-%Faccio l'interpolazione lineare dei punti dell'immagine in cui vuole 
-%eseguire l'inpainting
 newV = F_linear(coordScat);
 reconstructedImage_linear(indScat) = newV;
 
-%Faccio l'interpolazione nearest neighbor dei punti dell'immagine in cui  
-%vuole eseguire l'inpainting
 newV = F_nearest(coordScat);
 reconstructedImage_nearest(indScat) = newV;
 
-%output delle immagini restaurate
 Irestored_linear = reconstructedImage_linear;
 Irestored_nearest = reconstructedImage_nearest;
 
