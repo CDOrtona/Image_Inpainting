@@ -1,6 +1,6 @@
 ## Introduction
 
-This is a fairly simple program that has been coded with the aim of performing image inpainting on damaged images. 
+This is a fairly simple program that has been coded with the aim of performing image inpainting on damaged images and it works with both RGB and gray-scale images.
 Two different techniques have been used:
 1. Interpolation
 2. Explicit solution of a linear PDE
@@ -25,11 +25,11 @@ Two interpolants were defined: one for the linear interpolation and the other fo
 The second inpainting technique involves the solution of the following linear PDE using the explicit method.
 
 
- ![equation](http://www.sciweavers.org/tex2img.php?eq=u_t%20%3D%20%5Clambda%20%5CDelta%20u%20%2B%20%5Cchi_%7B%5COmega%20%5Csetminus%20D%7D%20%28f-u%29&bc=White&fc=Black&im=jpg&fs=12&ff=arev&edit=0)
+<img src="https://latex.codecogs.com/svg.image?u_t&space;=&space;\lambda\Delta&space;u&space;&plus;&space;\chi_{\Omega&space;\setminus&space;D}(f-u)" title="u_t = \Lambda\Omega u + \chi_{\Omega \setminus D}(f-u)" />
  
  where
  
- ![equation](http://www.sciweavers.org/tex2img.php?eq=%5Cchi_%7B%5COmega%20%20%5Csetminus%20%20D%7D%28x%29%20%3D%5Cbegin%7Bcases%7D%20%28f-u%29%20%26%20x%20%20%5Cepsilon%20%5COmega%20%20%5Csetminus%20%20D%20%20%5C%5C0%20%26%20otherwise%5Cend%7Bcases%7D%20&bc=White&fc=Black&im=jpg&fs=12&ff=arev&edit=0)
+<img src="https://latex.codecogs.com/svg.image?\chi_{\Omega&space;&space;\setminus&space;&space;D}(x)&space;=\begin{cases}&space;(f-u)&space;&&space;x&space;&space;\epsilon&space;\Omega&space;&space;\setminus&space;&space;D&space;&space;\\0&space;&&space;otherwise\end{cases}&space;" title="\chi_{\Omega \setminus D}(x) =\begin{cases} (f-u) & x \epsilon \Omega \setminus D \\0 & otherwise\end{cases} " />
  
 
 Such PDE is similar to the heat equation and permits the inpainting of the image through an isotropic diffusion. 
@@ -49,12 +49,14 @@ The first issue has been addressed and solved by implementing the **Neumann boun
 
 As an example have a look at how an image would look witouth and with such boundary condition:
 
-<img src=""/>
+<img src="https://github.com/CDOrtona/Image_Inpainting/blob/main/output/output_parrot_rgb_no_boundary.png" title="PDE with NO Neumann boundary condition" width="750"/>
+
+<img src="https://github.com/CDOrtona/Image_Inpainting/blob/main/output/output_parrot_rgb.png" title="PDE with Neumann boundary condition" />
 
 
 ## Future Implementations
 
-* Higher order non linear anisotropic PDE in order to take into account the edges 
+* Higher order non linear anisotropic PDE in order to have a weighted diffusion along the edges.
 
 
 
