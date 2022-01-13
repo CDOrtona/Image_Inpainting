@@ -44,7 +44,7 @@ The result of the algorithm is the following:
  2. The PDE performs an isotropic inpainting, hence the edges aren't taken into account.
  
  
-### Neumann Condtions
+### Neumann Boundary Condition
 The first issue has been addressed and solved by implementing the **Neumann boundary condition**.
 
 As an example have a look at how an image would look witouth and with such boundary condition:
