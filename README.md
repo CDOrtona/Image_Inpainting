@@ -5,7 +5,7 @@ Two different techniques have been used:
 1. Interpolation
 2. Explicit solution of a linear PDE
 
-The following image, used for this case study, has parts which have worn off over time. Those damaged regions are the ones we wish to inpaint and reconstruct. (In this repo you can find more example pictures which can be used to test the alghoritm).
+The following image, used for this case study, has pixels which have worn off over time. Those damaged regions are the ones we wish to inpaint and reconstruct. (In this repo you can find more example pictures which can be used to test the algorithm).
 
 <img src="https://github.com/CDOrtona/Image_Inpainting/blob/main/bebe.jpg" title="image to be inpainted" width="150"/>
 
