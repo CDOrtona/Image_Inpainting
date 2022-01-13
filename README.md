@@ -33,7 +33,7 @@ The second inpainting technique involves the solution of the following linear PD
  
 
 Such PDE is similar to the heat equation and permits the inpainting of the image through an isotropic diffusion. 
-A more in depth mathematical analysis of the problem can be found <a href="https://github.com/CDOrtona/Image_Inpainting/blob/main/doc/Doc-It.pdf"> Here </a>. (Please note that the doc is currently n Italian, the math part should be pretty straight forward though :laughing:
+A more in depth mathematical analysis of the problem can be found <a href="https://github.com/CDOrtona/Image_Inpainting/blob/main/doc/Doc-It.pdf"> Here </a>. (Please note that the doc is currently n Italian, the math part should be pretty straight forward though :laughing:)
 
 The result of the algorithm is the following: 
 
