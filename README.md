@@ -40,8 +40,8 @@ The result of the algorithm is the following:
 <img src="https://github.com/CDOrtona/Image_Inpainting/blob/main/Output/output_bebe_pde.png" title="Output PDE solution" />
  
  This PDE has two problems:
- 1. It doesn't take into account damaged pixels which might be part of the borders
- 2. The PDE solves performs an isotropic inpainting, hence the edges aren't taken into account.
+ 1. It doesn't take into account damaged pixels which might be part of the borders.
+ 2. The PDE performs an isotropic inpainting, hence the edges aren't taken into account.
  
  
 ### Neumann Condtions
