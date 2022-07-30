@@ -1,4 +1,40 @@
+<div align="center">
+  <h1>Image Inpainting</h1>
+  
+<!-- Badges -->
+<p>
+  <a href="https://github.com/CDOrtona/Image_Inpainting/graphs/contributors">
+    <img src="https://img.shields.io/github/contributors/Louis3797/awesome-readme-template" />
+  </a>
+  <a href="https://github.com/CDOrtona/Image_Inpainting/network/members">
+    <img src="https://img.shields.io/github/forks/CDOrtona/Image_Inpainting" alt="forks" />
+  </a>
+  <a href="https://github.com/CDOrtona/Image_Inpainting/stargazers">
+    <img src="https://img.shields.io/github/stars/CDOrtona/Image_Inpainting" alt="stars" />
+  </a>
+  <a href="https://github.com/CDOrtona/Image_Inpainting/blob/master/LICENSE">
+    <img src="https://img.shields.io/github/license/CDOrtona/Image_Inpainting" alt="license" />
+  </a>
+</p>
+
+<h4>
+    <a href="https://github.com/CDOrtona/Image_Inpainting/blob/main/doc/Doc-It.pdf">Documentation</a>
+</div>
+
+<br />
+
+
+<!-- Table of Content -->
+# Table of Content
+[Introduction](#introduction)
+[Interpolation](#interpolation)
+[Linear PDE](#linear-pde)
+ * [Neumann Boundary Condition](#neumann-boundary-condition)
+[Future Implementations](#future-implementations)
+[]()
+
 ## Introduction
+
 
 This is a fairly simple program that has been coded with the aim of performing image inpainting on damaged images and it works with both RGB and gray-scale images.
 Two different techniques have been used:
@@ -47,7 +83,7 @@ The result of the algorithm is the following:
 ### Neumann Boundary Condition
 The first issue has been addressed and solved by implementing the **Neumann boundary condition**.
 
-As an example have a look at how an image would look witouth and with such boundary condition:
+As an example have a look at how an image would look without and with such boundary condition:
 
 <img src="https://github.com/CDOrtona/Image_Inpainting/blob/main/output/output_parrot_rgb_no_boundary.png" title="PDE with NO Neumann boundary condition" width="750"/>
 
@@ -56,7 +92,12 @@ As an example have a look at how an image would look witouth and with such bound
 
 ## Future Implementations
 
-* Higher order non linear anisotropic PDE in order to have a weighted diffusion along the edges.
+* Higher order non linear anisotropic PDE in order to have a weighted, edge preserving diffusion along the edges.
+
+## License
+
+Distributed under the MIT License. See LICENSE.txt for more information.
+
 
 
 
