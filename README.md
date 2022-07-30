@@ -1,5 +1,5 @@
 <div align="center">
-  <h1>Image Inpainting</h1>
+  <h1>Image Inpainting - PDE Linear Diffusion</h1>
   
 <!-- Badges -->
 <p>
@@ -18,7 +18,7 @@
 </p>
 
 <h4>
-    <a href="https://github.com/CDOrtona/Image_Inpainting/blob/main/doc/Doc-It.pdf">Documentation</a>
+    <a href="https://github.com/CDOrtona/Image_Inpainting/blob/main/doc/Doc-It.pdf">Documentation(IT)</a>
 </div>
 
 <br />
@@ -26,12 +26,12 @@
 
 <!-- Table of Content -->
 # Table of Content
-[Introduction](#introduction)
-[Interpolation](#interpolation)
-[Linear PDE](#linear-pde)
- * [Neumann Boundary Condition](#neumann-boundary-condition)
-[Future Implementations](#future-implementations)
-[]()
+- [Introduction](#introduction)
+- [Interpolation](#interpolation)
+- [Linear PDE](#linear-pde)
+  * [Neumann Boundary Condition](#neumann-boundary-condition)
+- [Future Implementations](#future-implementations)
+- [License](#license)
 
 ## Introduction
 
